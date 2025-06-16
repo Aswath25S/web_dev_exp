@@ -6,7 +6,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Calistoga&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="styles.css">
+		<link rel="stylesheet" href="src/styles.css">
     </head>
 
     <body>
@@ -16,7 +16,7 @@
 
                 <div class="provider-buttons">
                     <button id="sign-in-with-google-btn" class="provider-btn">
-                        <img src="assets/providers/google.png" class="google-btn-logo">
+                        <img src="src/assets/providers/google.png" class="google-btn-logo">
                         Sign in with Google
                     </button>
                 </div>
@@ -28,14 +28,20 @@
                     <button id="sign-in-btn" class="primary-btn">Sign in</button>
                     <button id="create-account-btn" class="secondary-btn">Create Account</button>
                 </div>
+
             </div>
         </section>
 
+        <div class="test-btn-ctn">
+            <button id="test-btn" class="tertiary-btn">Test Func</button>
+        </div>
+
         <section id="logged-in-view">
             <div class="container">
+                <img src="src/assets/gifs/jerryandthebird.gif">
                 <nav>
                     <button id="sign-out-btn" class="icon-btn">
-                        <img src="assets/icons/icon-sign-out.svg" class="icon-img-btn">
+                        <img src="src/assets/icons/icon-sign-out.svg" class="icon-img-btn">
                     </button>
                 </nav>
 
@@ -48,6 +54,6 @@
             </div>
         </section>
 
-        <script src="script.js" type="module"></script>
+        <script src="src/script.js" type="module"></script>
     </body>
 </html>
