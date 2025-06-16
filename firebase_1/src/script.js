@@ -1,5 +1,6 @@
 // Imports
 import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 // Firebase Setup
 const firebaseConfig = {
@@ -10,8 +11,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-console.log(app)
+const auth = getAuth(app);
 
 // UI Elements
 const viewLoggedOut = document.getElementById("logged-out-view")
@@ -20,7 +20,7 @@ const viewLoggedIn = document.getElementById("logged-in-view")
 const signInWithGoogleButtonEl = document.getElementById("sign-in-with-google-btn")
 
 const emailInputEl = document.getElementById("email-input")
-const passwordInputEl = document.getElementById("create-account-btn")
+const passwordInputEl = document.getElementById("password-input")
 
 const signInButtonEl = document.getElementById("sign-in-btn")
 const createAccountButtonEl = document.getElementById("create-account-btn")
@@ -59,7 +59,15 @@ function authSignInWithEmail () {
 }
 
 function authCreateAccountWithEmail () {
-    console.log("Sign in with email and password")
+    const email = emailInputEl.value
+    const password = passwordInputEl.value
+
+    createUserWithEmailAndPassword(auth, email, password).
+        then((userCredential) => {
+            showLoggedInView()
+        }).catch((error) => {
+            console.log(error)
+        })
 }
 
 // UI Functions
