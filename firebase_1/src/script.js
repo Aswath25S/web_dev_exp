@@ -1,6 +1,13 @@
 // Imports
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, 
+        createUserWithEmailAndPassword, 
+        signInWithEmailAndPassword, 
+        signOut, 
+        onAuthStateChanged,
+        GoogleAuthProvider,
+        signInWithPopup
+    } from "firebase/auth";
 
 // Firebase Setup
 const firebaseConfig = {
@@ -12,6 +19,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 // UI Elements
 const viewLoggedOut = document.getElementById("logged-out-view")
@@ -30,8 +38,6 @@ const signOutButtonEl = document.getElementById("sign-out-btn")
 const userProfilePictureEl = document.getElementById("user-profile-picture")
 const userGreetingEl = document.getElementById("user-greeting")
 
-const testButton = document.getElementById("test-btn")
-
 // UI Event Listeners
 
 
@@ -40,22 +46,42 @@ signInWithGoogleButtonEl.addEventListener("click", authSignInWithGoogle)
 signInButtonEl.addEventListener("click", authSignInWithEmail)
 createAccountButtonEl.addEventListener("click", authCreateAccountWithEmail)
 
-testButton.addEventListener("click", onTestBtnClick)
-
+signOutButtonEl.addEventListener("click", authSignOut)
 
 // Main Code 
 
-showLoggedOutView()
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    showLoggedInView()
+  } else {
+    showLoggedOutView()
+  }
+});
 
 
 // Auth Functions
 
 function authSignInWithGoogle () {
-    console.log("Sign in with Google")
+    signInWithPopup(auth, provider).
+    then((result) => {
+        console.log("Signed in with google");
+    }).
+    catch((error) => {
+        console.log(error.message);
+    });
 }
 
 function authSignInWithEmail () {
-    console.log("Sign in with email")
+    const email = emailInputEl.value
+    const password = passwordInputEl.value
+    
+    signInWithEmailAndPassword(auth, email, password).
+    then((userCredential) => {
+        clearAuthField()
+    }).
+    catch((error) => {
+        console.log(error.message)
+    });
 }
 
 function authCreateAccountWithEmail () {
@@ -64,38 +90,45 @@ function authCreateAccountWithEmail () {
 
     createUserWithEmailAndPassword(auth, email, password).
         then((userCredential) => {
-            showLoggedInView()
+            clearAuthField()
         }).catch((error) => {
             console.log(error)
         })
 }
 
+function authSignOut () {
+    signOut(auth).then(() => {
+    }).
+    catch((error) => {
+        console.log(error.message)
+    });
+}
+
 // UI Functions
 
 function showLoggedOutView() {
-    hideElement(viewLoggedIn);
-    showElement(viewLoggedOut);
+    hideView(viewLoggedIn);
+    showView(viewLoggedOut);
 }
 
 function showLoggedInView() {
-    hideElement(viewLoggedOut);
-    showElement(viewLoggedIn);
+    hideView(viewLoggedOut);
+    showView(viewLoggedIn);
 }
 
-function hideElement(element) {
-    element.style.display = "none";
+function hideView(view) {
+    view.style.display = "none";
 }
 
-function showElement(element) {
-    element.style.display = "flex";
+function showView(view) {
+    view.style.display = "flex";
 }
 
-function onTestBtnClick() {
-    let disp = viewLoggedOut.style.display;
-    if (disp === "none"){
-        viewLoggedOut.style.display = "flex";
-    }
-    else {
-        viewLoggedOut.style.display = "none";
-    }
+function clearInputField(field) {
+    field.value = ""
+}
+
+function clearAuthField() {
+    clearInputField(emailInputEl);
+    clearInputField(passwordInputEl);
 }

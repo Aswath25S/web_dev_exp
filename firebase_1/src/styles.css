@@ -66,6 +66,13 @@ section {
 
 /* Nav  */
 
+nav {
+    margin: .6em 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
 /* Structure  */
 
 .container {
@@ -192,12 +199,7 @@ button:hover {
     background-color: var(--primary-color);   
 }
 
-
 /* Initial Setup */
-
-.test-btn-ctn {
-    display: none;
-}
 
 #logged-out-view {
     display: none;
@@ -205,4 +207,5 @@ button:hover {
 
 #logged-in-view {
     display: none;
+    margin: 0;
 }
