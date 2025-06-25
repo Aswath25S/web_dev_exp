@@ -9,6 +9,10 @@ import { getAuth,
         signInWithPopup,
         updateProfile
     } from "firebase/auth";
+import { getFirestore, 
+        collection, 
+        addDoc 
+    } from "firebase/firestore"
 
 // Firebase Setup
 const firebaseConfig = {
@@ -21,6 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const db = getFirestore(app)
 
 // UI Elements
 const viewLoggedOut = document.getElementById("logged-out-view")
@@ -39,6 +44,9 @@ const signOutButtonEl = document.getElementById("sign-out-btn")
 const userProfilePictureEl = document.getElementById("user-profile-picture")
 const userGreetingEl = document.getElementById("user-greeting")
 
+const textareaEl = document.getElementById("post-input")
+const postButtonEl = document.getElementById("post-btn")
+
 // UI Event Listeners
 
 
@@ -48,6 +56,8 @@ signInButtonEl.addEventListener("click", authSignInWithEmail)
 createAccountButtonEl.addEventListener("click", authCreateAccountWithEmail)
 
 signOutButtonEl.addEventListener("click", authSignOut)
+
+postButtonEl.addEventListener("click", postButtonPressed)
 
 // Main Code 
 
@@ -107,7 +117,26 @@ function authSignOut () {
     });
 }
 
+async function addPostToDB(postBody) {
+    try {
+        const docRef = await addDoc(collection(db, "posts"), {
+            body : postBody
+        });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (error) {
+    console.error("Error adding document: ", error.message);
+    }
+}
+
 // UI Functions
+
+function postButtonPressed() {
+    const postBody = textareaEl.value;
+    if(postBody) {
+        clearInputField(textareaEl);
+        addPostToDB(postBody)
+    }
+}
 
 function showLoggedOutView() {
     hideView(viewLoggedIn);
