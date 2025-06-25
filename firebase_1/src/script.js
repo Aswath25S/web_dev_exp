@@ -6,7 +6,8 @@ import { getAuth,
         signOut, 
         onAuthStateChanged,
         GoogleAuthProvider,
-        signInWithPopup
+        signInWithPopup,
+        updateProfile
     } from "firebase/auth";
 
 // Firebase Setup
@@ -53,6 +54,8 @@ signOutButtonEl.addEventListener("click", authSignOut)
 onAuthStateChanged(auth, (user) => {
   if (user) {
     showLoggedInView()
+    showProfilePicture(userProfilePictureEl, user)
+    showUserGreeting(userGreetingEl, user)
   } else {
     showLoggedOutView()
   }
@@ -131,4 +134,23 @@ function clearInputField(field) {
 function clearAuthField() {
     clearInputField(emailInputEl);
     clearInputField(passwordInputEl);
+}
+
+function showProfilePicture(imgEl, user){
+    const photoURL = user.photoURL;
+    if(photoURL){
+        imgEl.src = photoURL
+    }else{
+        imgEl.src = "./src/assets/images/default-profile-picture.jpeg"
+    }
+}
+
+function showUserGreeting(element, user){
+    const displayName = user.displayName;
+    if(displayName){
+        const userFirstName = displayName.split(" ")[0];
+        element.textContent = `Hey ${userFirstName}, how are you ?`
+    }else {
+        element.textContent = `Hey friend, how are you ?`
+    }
 }
