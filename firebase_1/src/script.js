@@ -12,7 +12,7 @@ import { getFirestore,
         collection, 
         addDoc,
         serverTimestamp,
-        getDocs
+        onSnapshot
     } from "firebase/firestore"
 
 // Firebase Setup
@@ -49,7 +49,6 @@ const moodEmojiEls = document.getElementsByClassName("mood-emoji-btn")
 const textareaEl = document.getElementById("post-input")
 const postButtonEl = document.getElementById("post-btn")
 
-const fetchPostsButtonEl = document.getElementById("fetch-posts-btn")
 const postsEl = document.getElementById("posts")
 
 
@@ -69,19 +68,19 @@ for (let moodEmojiEl of moodEmojiEls) {
 
 postButtonEl.addEventListener("click", postButtonPressed)
 
-fetchPostsButtonEl.addEventListener("click", fetchOnceAndRenderPosts)
-
 // State
 
 let moodState = 0;
+const collectionName = "posts"
 
 // Main Code 
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    showLoggedInView()
-    showProfilePicture(userProfilePictureEl, user)
-    showUserGreeting(userGreetingEl, user)
+    showLoggedInView();
+    showProfilePicture(userProfilePictureEl, user);
+    showUserGreeting(userGreetingEl, user);
+    fetchRealTimeRenderPosts();
   } else {
     showLoggedOutView()
   }
@@ -135,7 +134,7 @@ function authSignOut () {
 
 async function addPostToDB(postBody, user) {
     try {
-        const docRef = await addDoc(collection(db, "posts"), {
+        const docRef = await addDoc(collection(db, collectionName), {
             body : postBody,
             uid : user.uid,
             mood : moodState,
@@ -147,12 +146,13 @@ async function addPostToDB(postBody, user) {
     }
 }
 
-async function fetchOnceAndRenderPosts() {
-    const posts = await getDocs(collection(db, "posts"));
-    clearAll(postsEl)
-    posts.forEach((doc) => {
-        renderPosts(postsEl, doc.data())
-    });
+function fetchRealTimeRenderPosts() {
+    onSnapshot(collection(db, collectionName), (querySnapshot) => {
+        clearAll(postsEl);
+        querySnapshot.forEach((doc) => {
+            renderPosts(postsEl, doc.data())
+        })
+    })
 }
 
 // UI Functions
@@ -238,6 +238,9 @@ function showUserGreeting(element, user){
 }
 
 function displayDate(firebaseDate) {
+    if (!firebaseDate){
+        return "Date Loading"
+    }
     const date = firebaseDate.toDate();
 
     const day = date.getDate();
