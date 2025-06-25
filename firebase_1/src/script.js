@@ -82,7 +82,7 @@ onAuthStateChanged(auth, (user) => {
     showUserGreeting(userGreetingEl, user);
     fetchRealTimeRenderPosts();
   } else {
-    showLoggedOutView()
+    showLoggedOutView();
   }
 });
 
