@@ -11,7 +11,8 @@ import { getAuth,
 import { getFirestore, 
         collection, 
         addDoc,
-        serverTimestamp
+        serverTimestamp,
+        getDocs
     } from "firebase/firestore"
 
 // Firebase Setup
@@ -48,6 +49,9 @@ const moodEmojiEls = document.getElementsByClassName("mood-emoji-btn")
 const textareaEl = document.getElementById("post-input")
 const postButtonEl = document.getElementById("post-btn")
 
+const fetchPostsButtonEl = document.getElementById("fetch-posts-btn")
+const postsEl = document.getElementById("posts")
+
 
 // UI Event Listeners
 
@@ -64,6 +68,8 @@ for (let moodEmojiEl of moodEmojiEls) {
 }
 
 postButtonEl.addEventListener("click", postButtonPressed)
+
+fetchPostsButtonEl.addEventListener("click", fetchOnceAndRenderPosts)
 
 // State
 
@@ -141,7 +147,33 @@ async function addPostToDB(postBody, user) {
     }
 }
 
+async function fetchOnceAndRenderPosts() {
+    const posts = await getDocs(collection(db, "posts"));
+    clearAll(postsEl)
+    posts.forEach((doc) => {
+        renderPosts(postsEl, doc.data())
+    });
+}
+
 // UI Functions
+
+function renderPosts(postsEl, postData) {
+    postsEl.innerHTML += `
+        <div class="post">
+            <div class="header">
+                <h3>${displayDate(postData.createdAt)}</h3>
+                <img src="./src/assets/emojis/${postData.mood}.png">
+            </div>
+            <p>
+                ${replaceNewlinesWithBrTag(postData.body)}
+            </p>
+        </div>`
+
+}
+
+function replaceNewlinesWithBrTag(inputString) {
+    return inputString.replace(/\n/g, "<br>")
+}
 
 function postButtonPressed() {
     const postBody = textareaEl.value;
@@ -150,7 +182,13 @@ function postButtonPressed() {
         clearInputField(textareaEl);
         addPostToDB(postBody, user);
         resetAllMoodEmojis(moodEmojiEls);
+    } else {
+        console.log('post incomplete');
     }
+}
+
+function clearAll(element) {
+    element.innerHTML = ``;
 }
 
 function showLoggedOutView() {
@@ -197,6 +235,23 @@ function showUserGreeting(element, user){
     }else {
         element.textContent = `Hey friend, how are you ?`
     }
+}
+
+function displayDate(firebaseDate) {
+    const date = firebaseDate.toDate();
+
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getMonth()]
+
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+    hours = hours < 10 ? "0" + hours : hours
+    minutes = minutes < 10 ? "0" + minutes : minutes
+
+    return `${day} ${month} ${year} - ${hours}:${minutes}`
 }
 
 // Mood Functions

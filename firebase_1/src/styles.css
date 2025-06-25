@@ -40,8 +40,12 @@ body {
 
 /* Typography */
 
-h1, h2 {
+h1, h2, h3, p {
     margin: 0;
+}
+
+h2, h3 {
+    font-weight: 500;
 }
 
 .app-title {
@@ -91,7 +95,7 @@ section {
 }
 
 
-/* Mood Emojis */
+/* Emoji Section Mood Emojis */
 
 .mood-emojis {
     display: flex;
@@ -126,6 +130,43 @@ section {
     opacity: 0.5;
 }
 
+/* Post Section  */
+
+.posts-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-bottom: 1.8em;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary-color);
+    padding: .8em;
+    border-radius: var(--element-border-radius);
+    gap: .4em;
+}
+
+.post .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post .header h3 {
+    font-size: 1em;
+}
+
+.post .header img {
+    width: 2em;
+    height: 2em;
+}
+
+.post p {
+    font-size: .9em;
+    line-height: 1.3em;
+}
 
 /* Nav  */
 
@@ -153,7 +194,7 @@ nav {
 .app-container {
     display: flex;
     flex-direction: column;
-    gap: 2em;
+    gap: 1em;
 }
 
 /* Common for elements */
