@@ -8,6 +8,7 @@
     --light-color : #FFFEFC;
     --grey-color : #747E79;
     --dark-color : #000000;
+    --white-color : #FFFEFC;
 
     --primary-font : 'Cabin', sans-serif;
     --secodary-font : 'Calistoga', sans-serif;
@@ -137,6 +138,32 @@ section {
     flex-direction: column;
     gap: 1em;
     margin-bottom: 1.8em;
+}
+
+/* Filters */
+
+.filters-and-posts-section {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: .6em;
+}
+
+.filters-section {
+    display: flex;
+    gap: .4em;
+}
+
+.filter-btn {
+    color: var(--dark-color);
+    font-size: .9em;
+    padding: .3em;
+    background-color: transparent;
+}
+
+.selected-filter {
+    color: var(--white-color);
+    background-color: var(--dark-color);
 }
 
 .post {
