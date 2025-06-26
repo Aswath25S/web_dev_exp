@@ -166,6 +166,8 @@ section {
     background-color: var(--dark-color);
 }
 
+/* Post Section Post  */
+
 .post {
     display: flex;
     flex-direction: column;
@@ -174,6 +176,8 @@ section {
     border-radius: var(--element-border-radius);
     gap: .4em;
 }
+
+/* Post Header  */
 
 .post .header {
     display: flex;
@@ -193,6 +197,24 @@ section {
 .post p {
     font-size: .9em;
     line-height: 1.3em;
+}
+
+/* Post Footer  */
+
+.post .footer button {
+    font-size: .9em;
+    padding: .2em .8em;
+    box-shadow: 0px var(--small-button-height) 0px 0px var(--dark-color);
+    position: relative;
+}
+
+.post .footer button:hover {
+    top: var(--small-button-height);
+    box-shadow: none;
+}
+
+.post .footer .edit-color {
+    background-color: var(--post-color);
 }
 
 /* Nav  */
