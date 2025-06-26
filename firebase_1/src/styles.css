@@ -201,6 +201,12 @@ section {
 
 /* Post Footer  */
 
+.post .footer {
+    display: flex;
+    align-self: flex-start;
+    gap: .4em;
+}
+
 .post .footer button {
     font-size: .9em;
     padding: .2em .8em;
@@ -215,6 +221,10 @@ section {
 
 .post .footer .edit-color {
     background-color: var(--post-color);
+}
+
+.post .footer .delete-color {
+    background-color: var(--delete-color);
 }
 
 /* Nav  */
