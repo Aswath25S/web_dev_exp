@@ -1,9 +1,9 @@
-export async function getGenres(req, res) {
+export async function getGenres(req, res, next) {
     console.log("get genres api called")
-    res.send("fucking god genres")
+    next()
 }
 
-export async function getProducts(req, res) {
+export async function getProducts(req, res, next) {
     console.log("get products api called")
-    res.send("fucking hell and fucking god")
+    next()
 }

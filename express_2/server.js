@@ -6,6 +6,7 @@ const port = 8000;
 
 app.use(express.static("public"))
 app.use('/api/products', productsRouter)
+app.use((req, res) => {res.send("testing")})
 
 app.listen(port, () => {console.log(`server started on ${port}`)}).
     on('error', (error) => {
